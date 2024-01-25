@@ -1,7 +1,7 @@
 {
   "name": "@unsync/veolia-client",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "repository": "unsync/veolia-client",
   "main": "dist/index.js",
@@ -16,12 +16,12 @@
     "checkdeps": "ncu",
     "checkdeps:apply": "ncu -u",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint:fix": "eslint . --fix",
     "prepare": "husky",
     "test": "exit 0"
   },
   "dependencies": {
-    "@unsync/nodejs-tools": "^1.0.1",
+    "@unsync/nodejs-tools": "^1.0.2",
     "dayjs": "^1.11.10",
     "fast-xml-parser": "^4.3.3"
   },
@@ -29,13 +29,13 @@
     "@types/node": "^20.11.6",
     "@unsync/eslint": "^1.0.10",
     "@unsync/tsconfig": "^1.0.6",
-    "husky": "^9.0.1",
+    "husky": "^9.0.2",
     "lint-staged": "^15.2.0",
     "npm-check-updates": "^16.14.12",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "lint-staged": {
-    "*.{js,ts,vue,json}": "eslint --fix"
+    "*.{js,ts,vue,json}": "eslint --fix ."
   }
 }
