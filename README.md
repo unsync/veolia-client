@@ -2,11 +2,11 @@
 
 ### usage
 
-```ts 
+```ts
 const client = new VeoliaClient({
-    password: 'string',
-    mail: 'string',
-    pdl: 'string'
+  password: 'string',
+  mail: 'string',
+  pdl: 'string'
 })
 
 // all history
