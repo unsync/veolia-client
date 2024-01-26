@@ -97,19 +97,30 @@ export class VeoliaClient {
       }
 
       return soapBody.map((r: any) => {
-        this.logger.info(`VeoliaClient > getEnergyData`, {
-          dateReleve: r.dateReleve,
-          dateReleveFormatted: dayjs.tz(r.dateReleve).format('YYYY-MM-DD'),
-          dateReleveFormattedIso: dayjs.tz(dayjs(r.dateReleve).format('YYYY-MM-DD')).toISOString(),
-          now: dayjs.tz().toISOString(),
-          dateReleve1: dayjs.tz(r.dateReleve).toISOString(),
-          dateReleve2: dayjs.tz(r.dateReleve).utc().toISOString(),
-          consommation: r.consommation,
-          index: r.index,
-        })
+        // // regexp to extract date from string
+        // const dateRegex = /(\d{4})-(\d{2})-(\d{2})T.*/
+        // const dateExtracted = dateRegex.exec(r.dateReleve)?.[0] || r.dateReleve
+        //
+        // this.logger.info(`VeoliaClient > getEnergyData`, {
+        //   test1: dayjs(dateExtracted).toISOString(),
+        //   test2: dayjs('2023-12-26T00:00:00+02:00').tz('Europe/Paris').toISOString(),
+        //   dateReleve: r.dateReleve,
+        //   dateReleveFormatted: dayjs.tz(r.dateReleve).format('YYYY-MM-DD'),
+        //   dateReleveFormattedIso: dayjs.tz(dayjs(r.dateReleve).format('YYYY-MM-DD')).toISOString(),
+        //   now: dayjs.tz().toISOString(),
+        //   dateReleve1: dayjs.tz(r.dateReleve).toISOString(),
+        //   dateReleve2: dayjs.tz(r.dateReleve).utc().toISOString(),
+        //   consommation: r.consommation,
+        //   index: r.index,
+        // })
+        //
+        // const dateReleveLocal = dayjs(r.dateReleve).hour(0)
+        // const dateReleveUTC = dateReleveLocal.add(dateReleveLocal.utcOffset(), 'minute').utc()
 
-        const dateReleveLocal = dayjs(r.dateReleve).hour(0)
-        const dateReleveUTC = dateReleveLocal.add(dateReleveLocal.utcOffset(), 'minute').utc()
+        // regexp to extract date from string
+        const dateRegex = /(\d{4})-(\d{2})-(\d{2})T.*/
+        const dateReleveUTC = dayjs(dateRegex.exec(r.dateReleve)?.[0] || r.dateReleve).utc().add(12, 'hour')
+
         this.logger.info(`VeoliaClient > getEnergyData > ${dateReleveUTC.toISOString()}: ${r.consommation}`)
         return {
           start: dateReleveUTC.set('hour', 10).toISOString(),
