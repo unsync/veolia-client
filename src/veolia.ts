@@ -94,7 +94,7 @@ export class VeoliaClient {
       }
 
       return soapBody.map((r: any) => {
-        const dateReleveLocal = dayjs(r.dateReleve)
+        const dateReleveLocal = dayjs(r.dateReleve).hour(0)
         const dateReleveUTC = dateReleveLocal.add(dateReleveLocal.utcOffset(), 'minute').utc()
         this.logger.info(`VeoliaClient > getEnergyData > ${dateReleveUTC.toISOString()}: ${r.consommation}`)
         return {
