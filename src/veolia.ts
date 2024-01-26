@@ -2,6 +2,7 @@ import { getLogger } from '@unsync/nodejs-tools'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { XMLBuilder, XMLParser } from 'fast-xml-parser'
+import { httpRequest } from './http-client.js'
 
 export interface EnergyDataPoint {
   start: string
@@ -44,14 +45,7 @@ export class VeoliaClient {
       })
 
       this.logger.info('VeoliaClient > login')
-      const response = await fetch(this.url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/xml; charset=UTF-8',
-        },
-        body: this.xmlBuilder.build(loginBody),
-      })
-      const responseBody = await response.text()
+      const responseBody = await httpRequest({ url: this.url, body: this.xmlBuilder.build(loginBody) })
 
       // parse response
       const jsonObj = this.xmlParser.parse(responseBody)
@@ -68,7 +62,7 @@ export class VeoliaClient {
     return undefined
   }
 
-  public async getEnergyData(firstDay: Dayjs | null): Promise<EnergyDataPoint[]> {
+  public async getEnergyData(firstDay?: Dayjs): Promise<EnergyDataPoint[]> {
     try {
       const loginData = await this.login()
       if (!loginData) {
@@ -83,14 +77,7 @@ export class VeoliaClient {
       })
 
       this.logger.info('VeoliaClient > fetch data')
-      const response = await fetch(this.url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/xml; charset=UTF-8',
-        },
-        body: this.xmlBuilder.build(body),
-      })
-      const responseBody = await response.text()
+      const responseBody = await httpRequest({ url: this.url, body: this.xmlBuilder.build(body) })
 
       // parse response
       const jsonObj = this.xmlParser.parse(responseBody)
