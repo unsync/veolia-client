@@ -1,11 +1,13 @@
 import { getLogger } from '@unsync/nodejs-tools'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone.js'
 import utc from 'dayjs/plugin/utc.js'
 import { XMLBuilder, XMLParser } from 'fast-xml-parser'
 import { httpRequest } from './http-client.js'
 
 dayjs.extend(utc)
+dayjs.extend(timezone)
 
 export interface EnergyDataPoint {
   start: string
@@ -94,15 +96,20 @@ export class VeoliaClient {
       }
 
       return soapBody.map((r: any) => {
-        const dateReleveLocal = dayjs(r.dateReleve).hour(0)
-        const dateReleveUTC = dateReleveLocal.add(dateReleveLocal.utcOffset(), 'minute').utc()
-        this.logger.info(`VeoliaClient > getEnergyData > ${dateReleveUTC.toISOString()}: ${r.consommation}`)
+        // regexp to extract date from string
+        const dateRegex = /(\d{4}-\d{2}-\d{2})T.*/
+        const dateReleveUTC = dayjs(dateRegex.exec(r.dateReleve)?.[1] || r.dateReleve).utc().add(12, 'hour')
+        const state = r.consommation || 0
+        // veolia set the index to the start of the day,
+        // so we need to add the consumption to get the end of the day index
+        const index = Number(r.index) + Number(state)
+
+        this.logger.info(`VeoliaClient > getEnergyData > process data point`, { dateReleveUTC, state, index })
+
         return {
           start: dateReleveUTC.set('hour', 10).toISOString(),
-          state: r.consommation,
-          // veolia set the index to the start of the day,
-          // so we need to add the consumption to get the end of the day index
-          sum: Number(r.index) + Number(r.consommation),
+          state,
+          sum: index,
         }
       })
     } catch (e) {
