@@ -25,7 +25,7 @@ it('should fetch data', async () => {
     state: 200,
     sum: 34574,
   }, {
-    start: '2023-10-27T10:00:00.000Z',
+    start: '2023-10-29T10:00:00.000Z',
     state: 142,
     sum: 34716,
   }],
