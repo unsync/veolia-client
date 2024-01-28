@@ -15,13 +15,13 @@
     "build": "rm -Rf dist && tsc",
     "checkdeps": "ncu",
     "checkdeps:apply": "ncu -u",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "prepare": "husky",
     "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "release:patch": "npm version -m 'release:patch' patch",
     "release:minor": "npm version -m 'release:minor' minor",
-    "release:major": "npm version -m 'release:major' major"
+    "release:major": "npm version -m 'release:major' major",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@unsync/nodejs-tools": "^1.0.2",
@@ -30,16 +30,18 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.8",
-    "@unsync/eslint": "^1.0.18",
-    "@unsync/jest-preset": "^1.0.7",
+    "@unsync/eslint": "^1.0.21",
+    "@unsync/jest-preset": "^1.0.13",
     "@unsync/tsconfig": "^1.0.9",
     "husky": "^9.0.6",
     "lint-staged": "^15.2.0",
-    "npm-check-updates": "^16.14.14",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "lint-staged": {
     "*.{js,ts,vue,json}": "eslint --fix ."
+  },
+  "jest": {
+    "preset": "@unsync/jest-preset"
   }
 }
