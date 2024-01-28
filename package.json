@@ -12,16 +12,16 @@
     "node": ">=18"
   },
   "scripts": {
+    "build": "rm -Rf dist && tsc",
     "checkdeps": "ncu",
     "checkdeps:apply": "ncu -u",
-    "prepare": "husky",
-    "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "release:patch": "npm version -m 'release:patch' patch",
-    "release:minor": "npm version -m 'release:minor' minor",
-    "release:major": "npm version -m 'release:major' major",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "build": "rm -Rf dist && tsc"
+    "prepare": "husky",
+    "release:major": "npm version -m 'release:major' major",
+    "release:minor": "npm version -m 'release:minor' minor",
+    "release:patch": "npm version -m 'release:patch' patch",
+    "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
     "@unsync/nodejs-tools": "^1.0.4",
