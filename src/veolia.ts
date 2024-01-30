@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import { getLogger } from '@unsync/nodejs-tools'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
@@ -34,6 +35,7 @@ export class VeoliaClient {
   private xmlBuilder = new XMLBuilder({ ignoreAttributes: false })
   private xmlParser = new XMLParser()
   private logger = getLogger({ service: 'VeoliaClient' })
+  private stateFile = './.state.json'
 
   constructor(config: VeoliaConfig) {
     this.config = config
@@ -88,6 +90,9 @@ export class VeoliaClient {
       const jsonObj = this.xmlParser.parse(responseBody)
       let soapBody = this.getSoapResponse({ action: 'getConsommationJournaliere', jsonObj })
 
+      // create state file if not exists
+      const stateFile = this.getStateFile()
+
       // filter data
       if (firstDay) {
         soapBody = soapBody.filter((r: any) => {
@@ -95,7 +100,10 @@ export class VeoliaClient {
         })
       }
 
-      return soapBody.map((r: any) => {
+      const result = soapBody.map((r: any) => {
+        if (!stateFile[r.dateReleve])
+          stateFile[r.dateReleve] = r
+
         // regexp to extract date from string
         const dateRegex = /(\d{4}-\d{2}-\d{2})T.*/
         const dateReleveUTC = dayjs(dateRegex.exec(r.dateReleve)?.[1] || r.dateReleve).utc().add(12, 'hour')
@@ -112,10 +120,26 @@ export class VeoliaClient {
           sum: index,
         }
       })
+
+      // save state
+      this.saveState(stateFile)
+
+      return result
     } catch (e) {
       this.logger.error(`VeoliaClient > getEnergyData > error: ${JSON.stringify(e)}`, e)
       return []
     }
+  }
+
+  private getStateFile() {
+    if (!fs.existsSync(this.stateFile))
+      fs.writeFileSync(this.stateFile, JSON.stringify({}))
+
+    return JSON.parse(fs.readFileSync(this.stateFile, 'utf8'))
+  }
+
+  private saveState(state: any) {
+    fs.writeFileSync(this.stateFile, JSON.stringify(state))
   }
 
   private getSoapResponse(_: { action: string, jsonObj: JSONValue }) {
