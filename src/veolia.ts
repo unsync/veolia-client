@@ -16,6 +16,14 @@ export interface EnergyDataPoint {
   sum: number
 }
 
+export interface VeoliaDataPoint {
+  codeRetour: number
+  consommation: number
+  dateReleve: string
+  fiabiliteIndex: string
+  index: number
+}
+
 export interface VeoliaConfig {
   password: string
   mail: string
@@ -95,12 +103,12 @@ export class VeoliaClient {
 
       // filter data
       if (firstDay) {
-        soapBody = soapBody.filter((r: any) => {
+        soapBody = soapBody.filter((r: VeoliaDataPoint) => {
           return dayjs(r.dateReleve).isAfter(firstDay, 'day')
         })
       }
 
-      const result = soapBody.map((r: any) => {
+      const result = soapBody.map((r: VeoliaDataPoint) => {
         if (!stateFile[r.dateReleve])
           stateFile[r.dateReleve] = r
 
