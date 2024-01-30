@@ -21,6 +21,7 @@
     "release:major": "npm version -m 'release:major' major",
     "release:minor": "npm version -m 'release:minor' minor",
     "release:patch": "npm version -m 'release:patch' patch",
+    "run:dev": "ts-node-esm src/run.ts",
     "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
