@@ -27,14 +27,14 @@
   "dependencies": {
     "@unsync/nodejs-tools": "^1.0.4",
     "dayjs": "^1.11.10",
-    "fast-xml-parser": "^4.3.3"
+    "fast-xml-parser": "^4.3.4"
   },
   "devDependencies": {
-    "@types/node": "^20.11.9",
+    "@types/node": "^20.11.13",
     "@unsync/eslint": "^1.0.22",
     "@unsync/jest-preset": "^1.0.15",
     "@unsync/tsconfig": "^1.0.12",
-    "husky": "^9.0.6",
+    "husky": "^9.0.7",
     "lint-staged": "^15.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
