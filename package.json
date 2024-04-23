@@ -25,19 +25,20 @@
     "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
-    "@unsync/nodejs-tools": "^1.0.4",
+    "@unsync/nodejs-tools": "^1.0.5",
     "dayjs": "^1.11.10",
-    "fast-xml-parser": "^4.3.4"
+    "dotenv": "^16.4.5",
+    "fast-xml-parser": "^4.3.6"
   },
   "devDependencies": {
-    "@types/node": "^20.11.13",
+    "@types/node": "^20.12.7",
     "@unsync/eslint": "^1.0.22",
     "@unsync/jest-preset": "^1.0.15",
     "@unsync/tsconfig": "^1.0.12",
-    "husky": "^9.0.7",
-    "lint-staged": "^15.2.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   },
   "lint-staged": {
     "*.{js,ts,vue,json}": "eslint --fix ."

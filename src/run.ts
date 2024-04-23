@@ -1,10 +1,16 @@
 import console from 'node:console'
-import fs from 'node:fs'
+import process from 'node:process'
+import { config } from 'dotenv'
 import { VeoliaClient } from './veolia.js'
 
+config()
+
 async function run() {
-  const config = JSON.parse(fs.readFileSync('./.config.json', 'utf8'))
-  const app = new VeoliaClient(config)
+  const app = new VeoliaClient({
+    mail: process.env.VEOLIA_EMAIL || '',
+    password: process.env.VEOLIA_PASSWORD || '',
+    pdl: process.env.VEOLIA_PDL || '',
+  })
   const results = await app.getEnergyData()
   console.info(results)
 }

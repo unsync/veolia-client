@@ -5,3 +5,8 @@ coverage
 .DS_Store
 .config.json
 .state.json
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
