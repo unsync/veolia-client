@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "rm -Rf dist && tsc",
+    "prepack": "npm run build",
     "checkdeps": "ncu",
     "checkdeps:apply": "ncu -u",
     "lint": "eslint .",
