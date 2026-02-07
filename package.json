@@ -4,6 +4,9 @@
   "version": "1.0.12",
   "license": "MIT",
   "repository": "unsync/veolia-client",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "main": "dist/index.js",
   "files": [
     "dist"
