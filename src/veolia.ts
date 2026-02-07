@@ -1,4 +1,3 @@
-import { getLogger } from '@unsync/nodejs-tools'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import timezone from 'dayjs/plugin/timezone.js'
@@ -23,7 +22,10 @@ export class VeoliaClient {
   private url = 'https://www.service.eau.veolia.fr/icl-ws/iclWebService'
   private xmlBuilder = new XMLBuilder({ ignoreAttributes: false })
   private xmlParser = new XMLParser()
-  private logger = getLogger({ service: 'VeoliaClient' })
+  private logger = {
+    info: (...args: unknown[]) => console.warn('[VeoliaClient]', ...args),
+    error: (...args: unknown[]) => console.error('[VeoliaClient]', ...args),
+  }
 
   constructor(config: VeoliaConfig) {
     this.config = config
@@ -51,7 +53,8 @@ export class VeoliaClient {
         passwordToken: soapBody.espaceClient.cptPwd,
         aboId: soapBody.listContrats.aboId,
       }
-    } catch (e) {
+    }
+    catch (e) {
       this.logger.error(`VeoliaClient > login > error`, e)
     }
     return undefined
@@ -91,7 +94,8 @@ export class VeoliaClient {
       return dataPoints.filter((r) => {
         return firstDay ? dayjs(r.dateReleve).isAfter(firstDay, 'day') : true
       })
-    } catch (e) {
+    }
+    catch (e) {
       this.logger.error(`VeoliaClient > getEnergyData > error: ${JSON.stringify(e)}`, e)
       return []
     }

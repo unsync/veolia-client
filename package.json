@@ -21,29 +21,44 @@
     "release:major": "npm version -m 'release:major' major",
     "release:minor": "npm version -m 'release:minor' minor",
     "release:patch": "npm version -m 'release:patch' patch",
-    "run:dev": "ts-node-esm src/run.ts",
+    "run:dev": "tsx src/run.ts",
     "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
-    "@unsync/nodejs-tools": "^1.0.5",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
     "fast-xml-parser": "^4.3.6"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^2.27.3",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.12.7",
-    "@unsync/eslint": "^1.0.22",
-    "@unsync/jest-preset": "^1.0.15",
-    "@unsync/tsconfig": "^1.0.12",
+    "eslint": "^9.34.0",
     "husky": "^9.0.11",
+    "jest": "^29.7.0",
     "lint-staged": "^15.2.2",
-    "ts-node": "^10.9.2",
+    "ts-jest": "^29.4.1",
+    "tsx": "^4.20.4",
     "typescript": "^5.4.5"
   },
   "lint-staged": {
     "*.{js,ts,vue,json}": "eslint --fix ."
   },
   "jest": {
-    "preset": "@unsync/jest-preset"
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
+    }
   }
 }
